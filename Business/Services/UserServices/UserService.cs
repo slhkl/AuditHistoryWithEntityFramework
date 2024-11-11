@@ -25,8 +25,14 @@ namespace Business.Services.UserServices
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(User user)
+        public async Task UpdateAsync(User userDto)
         {
+            var user = await _userRepository.GetAsync(u => u.Id == userDto.Id);
+            user.Name = userDto.Name;
+            user.Password = userDto.Password;
+            user.PhoneNumber = userDto.PhoneNumber;
+            user.Email = userDto.Email;
+
             _userRepository.Update(user);
             await _unitOfWork.SaveChangesAsync();
         }

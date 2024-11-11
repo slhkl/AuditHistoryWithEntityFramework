@@ -8,11 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 Configuration.Setup()
     .UseConditional(c => c
-        .When(a => /*deactive for now*/false, new PostgreSqlDataProvider(p =>
+        .When(a => true, new PostgreSqlDataProvider(p =>
         {
             p.ConnectionString(Environment.GetEnvironmentVariable("POSTGRE_URI"));
-            p.TableName("Users");
+            p.TableName("AuditHistory");
             p.IdColumnName("Id");
+            p.DataColumn("Data");
         }))
         .Otherwise(new FileDataProvider(f =>
         {
