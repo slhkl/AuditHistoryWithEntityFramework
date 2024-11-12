@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class İnitial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,10 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Data = table.Column<string>(type: "text", nullable: false)
+                    Action = table.Column<string>(type: "text", nullable: true),
+                    TableName = table.Column<string>(type: "text", nullable: false),
+                    ChangedTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ChangingHistory = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

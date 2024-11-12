@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241111121906_İnitial")]
-    partial class İnitial
+    [Migration("20241112114000_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,7 +36,16 @@ namespace DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Data")
+                    b.Property<string>("Action")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ChangedTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("ChangingHistory")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TableName")
                         .IsRequired()
                         .HasColumnType("text");
 

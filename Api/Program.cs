@@ -1,19 +1,23 @@
-using Audit.Core;
 using Audit.Core.Providers;
+using Audit.EntityFramework;
 using Audit.PostgreSql.Providers;
 using Business.Services.UserServices;
+using Data.Entities.Audit;
 using DataAccess.Concrete;
 using DataAccess.Discrete;
 using Microsoft.EntityFrameworkCore;
 
-Configuration.Setup()
+Audit.Core.Configuration.Setup()
     .UseConditional(c => c
         .When(a => true, new PostgreSqlDataProvider(p =>
         {
             p.ConnectionString(Environment.GetEnvironmentVariable("POSTGRE_URI"));
-            p.TableName("AuditHistory");
-            p.IdColumnName("Id");
-            p.DataColumn("Data");
+            p.TableName(nameof(AuditHistory));
+            p.IdColumnName(nameof(AuditHistory.Id));
+            p.DataColumn(nameof(AuditHistory.ChangingHistory));
+            p.CustomColumn(nameof(AuditHistory.ChangedTime), a => a.CustomFields[nameof(AuditHistory.ChangedTime)]);
+            p.CustomColumn(nameof(AuditHistory.Action), a => string.Join(", ", a.GetEntityFrameworkEvent().Entries.Select(e => e.Action).Distinct()));
+            p.CustomColumn(nameof(AuditHistory.TableName), a => string.Join(", ", a.GetEntityFrameworkEvent().Entries.Select(e => e.Table).Distinct()));
         }))
         .Otherwise(new FileDataProvider(f =>
         {

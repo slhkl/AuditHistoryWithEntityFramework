@@ -33,7 +33,16 @@ namespace DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Data")
+                    b.Property<string>("Action")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ChangedTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("ChangingHistory")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TableName")
                         .IsRequired()
                         .HasColumnType("text");
 
